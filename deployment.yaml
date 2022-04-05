@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: javaeatmemory3
+  name: javaeatmemory3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javaeatmemory3
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: javaeatmemory3
+    spec:
+      containers:
+      - image: keksimus10/javaeatmemory3
+        name: javaeatmemory3
+        resources: {}
+        volumeMounts:
+        - mountPath: /app/crashes
+          name: crash
+      volumes:
+      - name: crash
+        hostPath:
+          # directory location on host
+          path: /home/crashes
+          # this field is optional
+          type: Directory
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: javaeatmemory3
+  name: javaeatmemory3
+spec:
+  ports:
+  - name: 8084-8084
+    port: 8084
+    protocol: TCP
+    targetPort: 8082
+  selector:
+    app: javaeatmemory3
+  type: ClusterIP
+status:
+  loadBalancer: {}
